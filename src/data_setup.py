@@ -5,10 +5,7 @@ from torchvision import datasets
 import numpy as np
 
 def load_dataset(dataset_name, path_dir):
-    print("Iniciando o download!")
     kaggle.api.dataset_download_files(dataset_name, path=path_dir, unzip=True)
-    print("Download concluído")
-
 
 def get_train_data_transformed(root, image_size, random_flip,random_rotation, mean, std):
     train_transform = T.Compose([

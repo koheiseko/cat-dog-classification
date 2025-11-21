@@ -9,8 +9,8 @@ import os
 SEED = 42
 IMAGE_SIZE = 224
 LEARNING_RATE = 0.0001
-N_EPOCHS = 10
-N_EPOCHS_FINE_TUNING = 5
+N_EPOCHS = 3
+N_EPOCHS_FINE_TUNING = 2
 N_CLASSES = 2
 BATCH_SIZE = 32
 TRAINING_SIZE = 0.2
@@ -23,8 +23,8 @@ def main():
     print("[INFO] Iniciando o download dos dados")
     dataset_name = "tongpython/cat-and-dog"
     load_dataset(dataset_name, "data")
-    print("[INFO] Os dados foram baixados!")
-
+    print("[INFO] Download concluído!")
+    
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     torch.manual_seed(SEED)
@@ -53,11 +53,11 @@ def main():
 
     print(f"[INFO] Iniciando o processo de avaliação nos dados de teste")
     model_acc = evaluate(model, test_loader, accuracy, device).compute().item()
-    print(f"[RESULTADO] Acurácia do modelo após o treinamento: {model_acc:.3f}%")
+    print(f"[RESULTADO] Acurácia do modelo após o treinamento: {model_acc * 100:.3f}%")
 
     os.makedirs(name="models", exist_ok=True)
-    torch.save(model.state_dict(), "models/resnet.pth")
-    print("O modelo foi salvo com sucesso")
+    torch.save(model.state_dict(), "models/resnet_frozen.pth")
+    print("[INFO] O modelo foi salvo com sucesso")
 
     print("[INFO] Inicializando o fine tuning do modelo")
     for param in model.parameters():
@@ -70,12 +70,13 @@ def main():
     history_fine_tune = train(model, optimizer_fine_tune, xentropy, accuracy, train_loader, valid_loader, N_EPOCHS_FINE_TUNING, device)
     print("[INFO] Fine tuning finalizado")
 
-    torch.save(model.state_dict(), "models/resnet_finetuned.pth")
-    print("[INFO] O modelo pós fine tuning foi salvo com sucesso")
 
     print(f"[INFO] Iniciando o processo de avaliação nos dados de teste")
     model_fine_tuning_acc = evaluate(model, test_loader, accuracy, device).compute().item()
-    print(f"[RESULTADO] Acurácia do modelo após o treinamento: {model_fine_tuning_acc:.3f}%")
+    print(f"[RESULTADO] Acurácia do modelo após o treinamento: {model_fine_tuning_acc * 100:.3f}%")
+
+    torch.save(model.state_dict(), "models/resnet_finetuned.pth")
+    print("[INFO] O modelo pós fine tuning foi salvo com sucesso")
 
 if __name__ == "__main__":
     main()
