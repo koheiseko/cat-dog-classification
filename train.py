@@ -14,16 +14,12 @@ N_EPOCHS_FINE_TUNING = 2
 N_CLASSES = 2
 BATCH_SIZE = 32
 TRAINING_SIZE = 0.2
+DATASET_NAME = "tongpython/cat-and-dog"
 
 
 def main():
 
-    os.makedirs(name="data", exist_ok=True)
-
-    print("[INFO] Iniciando o download dos dados")
-    dataset_name = "tongpython/cat-and-dog"
-    load_dataset(dataset_name, "data")
-    print("[INFO] Download concluído!")
+    load_dataset(DATASET_NAME, "data")
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
 

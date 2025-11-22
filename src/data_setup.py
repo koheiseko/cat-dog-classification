@@ -3,9 +3,16 @@ from torch.utils.data import DataLoader, random_split
 import torchvision.transforms.v2 as T
 from torchvision import datasets
 import numpy as np
+import os
 
 def load_dataset(dataset_name, path_dir):
-    kaggle.api.dataset_download_files(dataset_name, path=path_dir, unzip=True)
+    print("[INFO] Iniciando o download dos dados")
+    if not os.path.isdir("data"):
+        os.makedirs(name="data", exist_ok=True)
+        kaggle.api.dataset_download_files(dataset_name, path=path_dir, unzip=True)
+        print("[INFO] Download concluído!")
+    else:
+        print("[INFO] Os dados já foram baixados")
 
 def get_train_data_transformed(root, image_size, random_flip,random_rotation, mean, std):
     train_transform = T.Compose([
