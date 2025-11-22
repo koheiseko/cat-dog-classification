@@ -56,7 +56,7 @@ cd cat-dog-classification
 2. Instale as dependências
 
 ```
-uc sync
+uv sync
 ```
 
 3. Execute o arquivo train.py

@@ -51,15 +51,15 @@ def main():
     print(f"[INFO] Iniciando o treinamento do modelo por {N_EPOCHS} épocas")
     history = train(model, optimizer, xentropy, accuracy, train_loader, valid_loader, N_EPOCHS, device)
 
-    print(f"[INFO] Iniciando o processo de avaliação nos dados de teste")
+    print(f"[INFO] Iniciando o processo de avaliação do modelo")
     model_acc = evaluate(model, test_loader, accuracy, device).compute().item()
-    print(f"[RESULTADO] Acurácia do modelo após o treinamento: {model_acc * 100:.3f}%")
+    print(f"[RESULTADO] Acurácia: {model_acc * 100:.3f}%")
 
     os.makedirs(name="models", exist_ok=True)
     torch.save(model.state_dict(), "models/resnet_frozen.pth")
     print("[INFO] O modelo foi salvo com sucesso")
 
-    print("[INFO] Inicializando o fine tuning do modelo")
+    print("[INFO] Iniciando o fine tuning do modelo")
     for param in model.parameters():
         param.requires_grad = True
 
@@ -68,15 +68,13 @@ def main():
     optimizer_fine_tune = torch.optim.AdamW(params=model.parameters(), lr=learning_rate_fine_tune)
 
     history_fine_tune = train(model, optimizer_fine_tune, xentropy, accuracy, train_loader, valid_loader, N_EPOCHS_FINE_TUNING, device)
-    print("[INFO] Fine tuning finalizado")
 
-
-    print(f"[INFO] Iniciando o processo de avaliação nos dados de teste")
+    print(f"[INFO] Iniciando o processo de avaliação do modelo após o fine tuning")
     model_fine_tuning_acc = evaluate(model, test_loader, accuracy, device).compute().item()
-    print(f"[RESULTADO] Acurácia do modelo após o treinamento: {model_fine_tuning_acc * 100:.3f}%")
+    print(f"[RESULTADO] Acurácia: {model_fine_tuning_acc * 100:.3f}%")
 
     torch.save(model.state_dict(), "models/resnet_finetuned.pth")
-    print("[INFO] O modelo pós fine tuning foi salvo com sucesso")
+    print("[INFO] O modelo após o fine tuning foi salvo com sucesso")
 
 if __name__ == "__main__":
     main()
