@@ -9,8 +9,8 @@ import os
 SEED = 42
 IMAGE_SIZE = 224
 LEARNING_RATE = 0.0001
-N_EPOCHS = 3
-N_EPOCHS_FINE_TUNING = 2
+N_EPOCHS = 15
+N_EPOCHS_FINE_TUNING = 5
 N_CLASSES = 2
 BATCH_SIZE = 32
 TRAINING_SIZE = 0.2
@@ -30,8 +30,8 @@ def main():
     imagenet_mean = [0.485, 0.456, 0.406]
     imagenet_std = [0.229, 0.224, 0.225]
 
-    train_and_valid_data = get_train_data_transformed("data/training_set", IMAGE_SIZE, 0.5, 10, imagenet_mean, imagenet_std)
-    test_data = get_test_data_transformed("data/test_set", IMAGE_SIZE, imagenet_mean, imagenet_std)
+    train_and_valid_data = get_train_data_transformed("data/training_set/training_set", IMAGE_SIZE, 0.5, 10, imagenet_mean, imagenet_std)
+    test_data = get_test_data_transformed("data/test_set/test_set", IMAGE_SIZE, imagenet_mean, imagenet_std)
     train_data, valid_data = train_test_split(train_and_valid_data, TRAINING_SIZE)
 
     train_loader, valid_loader, test_loader = get_data_loader(train_data, valid_data, test_data, BATCH_SIZE, True)
