@@ -26,7 +26,7 @@ def evaluation(model, data_loader, metric, device, mean, std):
         for X, y_true in data_loader:
             X, y_true = X.to(device), y_true.to(device)
             y_pred = model(X)
-            prob = F.softmax(y_pred)
+            prob = F.softmax(y_pred, dim=1)
             classe = torch.argmax(prob, dim=1).item()
             
             X = X.reshape(3, 224, 224)
