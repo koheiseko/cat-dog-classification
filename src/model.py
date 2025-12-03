@@ -1,8 +1,9 @@
 import torch.nn as nn
-from torchvision import models 
+from torchvision import models
+
 
 class ResNetTransfer(nn.Module):
-    def __init__(self, n_classes:int):
+    def __init__(self, n_classes: int):
         super().__init__()
 
         weights = models.ResNet50_Weights.DEFAULT
